@@ -4,7 +4,9 @@ class ProductCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Create a product'),
+      child: RaisedButton(child: Text('Save'),onPressed: () {
+        
+      }),
     );
   }
 }
