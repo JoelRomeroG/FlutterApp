@@ -20,9 +20,7 @@ class AdminPage extends StatelessWidget {
               ListTile(
                 title: Text('All Products'),
                 onTap: () {
-                  Navigator.pushReplacementNamed(
-                    context, '/'
-                  );
+                  Navigator.pushReplacementNamed(context, '/');
                 },
               ),
             ],
@@ -43,10 +41,9 @@ class AdminPage extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(children: <Widget>[
-          ProductCreatePage(),
-          ProductListPage()
-        ],),
+        body: TabBarView(
+          children: <Widget>[ProductCreatePage(), ProductListPage()],
+        ),
       ),
     );
   }
