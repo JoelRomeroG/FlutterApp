@@ -12,9 +12,12 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String _titleValue = '';
-  String _descriptionValue = '';
-  double _priceValue = 0.0;
+  final Map<String, dynamic> _formData = {
+    'title': null,
+    'description': null,
+    'price': null,
+    'image': 'assets/sushi.jpg'
+  };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleField() {
@@ -27,9 +30,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       },
       keyboardType: TextInputType.text,
       onSaved: (String value) {
-        setState(() {
-          _titleValue = value;
-        });
+        _formData['title'] = value;
       },
     );
   }
@@ -45,9 +46,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       maxLines: 4,
       keyboardType: TextInputType.multiline,
       onSaved: (String value) {
-        setState(() {
-          _descriptionValue = value;
-        });
+        _formData['description'] = value;
       },
     );
   }
@@ -63,9 +62,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       },
       keyboardType: TextInputType.number,
       onSaved: (String value) {
-        setState(() {
-          _priceValue = double.parse(value);
-        });
+        _formData['price'] = double.parse(value);
       },
     );
   }
@@ -73,13 +70,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   void _submitForm() {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
-    final Map<String, dynamic> product = {
-      'title': _titleValue,
-      'description': _descriptionValue,
-      'price': _priceValue,
-      'image': 'assets/sushi.jpg'
-    };
-    widget.addProduct(product);
+    widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/home');
   }
 
@@ -89,26 +80,31 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double paddingWidth = deviceWidth - targetWidth;
 
-    return Container(
-      margin: EdgeInsets.all(10.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: paddingWidth / 2),
-          children: <Widget>[
-            _buildTitleField(),
-            _buildDescriptionField(),
-            _buildPriceField(),
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              color: Theme.of(context).accentColor,
-              textColor: Colors.white,
-              child: Text('Create'),
-              onPressed: _submitForm,
-            ),
-          ],
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: paddingWidth / 2),
+            children: <Widget>[
+              _buildTitleField(),
+              _buildDescriptionField(),
+              _buildPriceField(),
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                color: Theme.of(context).accentColor,
+                textColor: Colors.white,
+                child: Text('Create'),
+                onPressed: _submitForm,
+              ),
+            ],
+          ),
         ),
       ),
     );
