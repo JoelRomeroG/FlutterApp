@@ -55,7 +55,8 @@ class AdminPage extends StatelessWidget {
             ProductEditPage(addProduct: addProduct),
             ProductListPage(
               products,
-              updateProduct
+              updateProduct,
+              deleteProduct
             )
           ],
         ),
