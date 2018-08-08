@@ -8,9 +8,12 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String _emailValue = '';
-  String _passwordValue = '';
-  bool _acceptTerms = false;
+  final Map<String, dynamic> _formData = {
+    'email': null,
+    'password': null,
+    'terms': false
+  };
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -23,38 +26,59 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  Widget _buildEmailTextfield() {
-    return TextField(
+  Widget _buildEmailFormField() {
+    return TextFormField(
       keyboardType: TextInputType.emailAddress,
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'Email is required and must be a valid email address';
+        }
+      },
       decoration: InputDecoration(
-          labelText: 'Email', filled: true, fillColor: Colors.white),
-      onChanged: (String email) {
-        setState(() {
-          _emailValue = email;
-        });
+        labelText: 'Email',
+        filled: true,
+        errorStyle: TextStyle(
+          color: Colors.redAccent,
+        ),
+        fillColor: Colors.white30,
+      ),
+      onSaved: (String value) {
+        _formData['email'] = value;
       },
     );
   }
 
-  Widget _buildPasswordTextfield() {
-    return TextField(
+  Widget _buildPasswordFormField() {
+    return TextFormField(
       obscureText: true,
       decoration: InputDecoration(
-          labelText: 'Password', filled: true, fillColor: Colors.white),
-      onChanged: (String password) {
-        setState(() {
-          _passwordValue = password;
-        });
+        labelText: 'Password',
+        filled: true,
+        errorStyle: TextStyle(
+          color: Colors.redAccent,
+        ),
+        fillColor: Colors.white30,
+      ),
+      validator: (String value) {
+        if (value.isEmpty || value.length < 8) {
+          return 'Password is required and must be 8+ characters';
+        }
+      },
+      onSaved: (String value) {
+        _formData['password'] = value;
       },
     );
   }
 
   Widget _buildAcceptSwitch() {
     return SwitchListTile(
-      value: _acceptTerms,
+      value: _formData['terms'],
+      activeColor: Colors.lightBlueAccent,
       onChanged: (bool value) {
         setState(() {
-          _acceptTerms = value;
+          _formData['terms'] = value;
         });
       },
       title: Text('Accept Terms'),
@@ -62,6 +86,8 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void _submitForm() {
+    if (!_formKey.currentState.validate() || !_formData['terms']) return;
+    _formKey.currentState.save();
     Navigator.pushReplacementNamed(context, '/home');
   }
 
@@ -72,38 +98,48 @@ class _AuthPageState extends State<AuthPage> {
         : MediaQuery.of(context).size.width * 0.95;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Login'),
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-            image: _buildBackgroundImage(),
-          ),
-          padding: EdgeInsets.all(10.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                width: targetWidth,
-                child: Column(
-                  children: <Widget>[
-                    _buildEmailTextfield(),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    _buildPasswordTextfield(),
-                    _buildAcceptSwitch(),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    RaisedButton(
-                      child: Text('Login'),
-                      onPressed: _submitForm,
-                    ),
-                  ],
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Form(
+          key: _formKey,
+          child: Container(
+            decoration: BoxDecoration(
+              image: _buildBackgroundImage(),
+            ),
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Container(
+                  width: targetWidth,
+                  child: Column(
+                    children: <Widget>[
+                      _buildEmailFormField(),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      _buildPasswordFormField(),
+                      _buildAcceptSwitch(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      RaisedButton(
+                        child: Text('Login'),
+                        color: Colors.lightBlue,
+                        onPressed: _submitForm,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
