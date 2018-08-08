@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import '../widgets/ui_elements/title_default.dart';
+import '../widgets/products/price_tag.dart';
 
 class ProductPage extends StatelessWidget {
   final List<Map<String, dynamic>> products;
@@ -14,19 +15,8 @@ class ProductPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         TitleDefault(products[index]['title']),
-        SizedBox(width: 8.0),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 3.0),
-          child: Text(
-            '\$${products[index]['price'].toString()}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
-              borderRadius: BorderRadius.circular(5.0)),
-        ),
+        SizedBox(width: 40.0),
+        PriceTag(products[index]['price'].toString()),
       ],
     );
   }
@@ -50,7 +40,7 @@ class ProductPage extends StatelessWidget {
             SizedBox(height: 10.0),
             _buildAddressPriceRow(context),
             SizedBox(
-              height: 7.0,
+              height: 25.0,
             ),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),

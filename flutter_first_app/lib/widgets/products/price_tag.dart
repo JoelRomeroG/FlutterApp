@@ -15,7 +15,7 @@ class PriceTag extends StatelessWidget {
         style: TextStyle(color: Colors.white),
       ),
       decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
+          color: Colors.redAccent,
           borderRadius: BorderRadius.circular(5.0)),
     );
   }

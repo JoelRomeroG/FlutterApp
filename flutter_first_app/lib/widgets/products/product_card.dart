@@ -21,15 +21,18 @@ class ProductCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TitleDefault(product['title']),
-            SizedBox(width: 8.0),
+            SizedBox(width: 20.0),
             PriceTag(product['price'].toString()),
           ],
+        ),
+        SizedBox(
+          height: 20.0,
         ),
         AddressTag('Asia Oriental Kitchen, Mundo E'),
         ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
           IconButton(
               icon: Icon(Icons.info),
-              color: Theme.of(context).primaryColor,
+              color: Colors.blueAccent,
               onPressed: () {
                 Navigator.pushNamed<bool>(
                     context, '/product/' + productIndex.toString());
