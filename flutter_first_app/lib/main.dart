@@ -4,6 +4,7 @@ import './pages/product.dart';
 import './pages/admin.dart';
 import './pages/products.dart';
 import './pages/auth.dart';
+import './models/product.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,15 +16,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, dynamic>> _products = [];
+  List<Product> _products = [];
 
-  void _addProduct(Map<String, dynamic> product) {
+  void _addProduct(Product product) {
     setState(() {
       _products.add(product);
     });
   }
 
-  void _updateProduct(int index, Map<String, dynamic> product) {
+  void _updateProduct(int index, Product product) {
     setState(() {
       _products[index] = product;
     });
@@ -39,10 +40,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.blue,
-          accentColor: Colors.lightBlueAccent,
-          buttonColor: Colors.blueAccent),
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+        accentColor: Colors.lightBlueAccent,
+        buttonColor: Colors.blueAccent,
+      ),
       routes: {
         '/': (BuildContext context) => AuthPage(),
         '/home': (BuildContext context) => ProductsPage(_products),
