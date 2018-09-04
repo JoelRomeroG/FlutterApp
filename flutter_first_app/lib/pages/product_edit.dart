@@ -135,7 +135,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         Product(
           title: _formData['title'],
           description: _formData['description'],
-          price: _formData['.price'],
+          price: _formData['price'],
           image: _formData['image'],
         ),
       );
